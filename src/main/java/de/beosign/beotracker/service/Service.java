@@ -27,6 +27,17 @@ public interface Service<T> {
         return t;
     }
 
+    default T update(T t) {
+        t = getEntityManager().merge(t);
+        getEntityManager().flush();
+        return t;
+    }
+
+    default void remove(T t) {
+        getEntityManager().remove(t);
+        getEntityManager().flush();
+    }
+
     default String getFindByQueryName() {
         return getEntityClass().getSimpleName() + ".findById";
     }

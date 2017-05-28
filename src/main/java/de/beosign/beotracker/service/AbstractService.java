@@ -43,4 +43,21 @@ public abstract class AbstractService<T> implements Service<T> {
     public T create(T t) {
         return Service.super.create(t);
     }
+
+    /**
+     * Overridden so a transaction is started.
+     */
+    @Override
+    public T update(T t) {
+        return Service.super.update(t);
+    }
+
+    /**
+     * Overridden so a transaction is started.
+     */
+    @Override
+    public void remove(T t) {
+        Service.super.remove(t);
+    }
+
 }
