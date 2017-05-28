@@ -1,3 +1,7 @@
+import java.nio.file.Path
+import java.nio.file.Files
+import java.io.File
+
 apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'maven'
@@ -21,6 +25,7 @@ repositories {
     mavenCentral()
 } 
 
+project.webAppDirName = "WebContent"
 
 sourceCompatibility=1.8
 targetCompatibility=1.8
@@ -43,3 +48,38 @@ dependencies {
     testCompile 'org.apache.logging.log4j:log4j-slf4j-impl:2.6.2'
 }
 
+
+task copyWar(type: Copy, dependsOn: war) {
+    from('build/libs')
+    into('upload')
+    include('*.war')
+    
+    doFirst {
+        println "copy war ${war.archiveName} to ${destinationDir}"
+    }
+
+}
+
+task deployToOpenshift(type: Exec, dependsOn: copyWar) {
+    workingDir 'C:\\Program Files (x86)\\OpenShift'
+ 
+    commandLine 'cmd', '/c', 'oc rsync "' + new File('upload/').getAbsoluteFile() + '" beotracker-3-8vpfp:/wildfly/standalone/deployments'
+    
+    doFirst {
+        File warFile = new File('upload/' + war.archiveName)
+        
+        String newname = warFile.getParentFile().getAbsolutePath() + '\\beotracker.war'
+        println "rename war ${war.archiveName} to " + newname
+        
+        File newFile = new File(newname);
+        if (newFile.exists()) {
+            newFile.delete();
+        }
+        
+        warFile.renameTo(newname);
+    }
+}
+
+war.doLast {
+    println 'built WAR: ' + archiveName
+}
