@@ -5,15 +5,15 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import de.beosign.beotracker.ticket.Ticket;
-
 public interface Service<T> {
+    public static final String FIND_BY_ID = "findById";
+
     EntityManager getEntityManager();
 
     Class<T> getEntityClass();
 
     default T find(int id) {
-        TypedQuery<T> q = getEntityManager().createNamedQuery(Ticket.FIND_BY_ID, getEntityClass());
+        TypedQuery<T> q = getEntityManager().createNamedQuery(getFindByQueryName(), getEntityClass());
         q.setParameter("id", id);
 
         List<T> result = q.getResultList();
