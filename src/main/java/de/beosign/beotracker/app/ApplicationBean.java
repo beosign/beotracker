@@ -30,6 +30,7 @@ public class ApplicationBean {
         log.info("Created ticket {}", ticket);
 
         System.out.println(ticketService.find(1));
+        System.out.println(ticketService.findAll());
     }
 
 }
