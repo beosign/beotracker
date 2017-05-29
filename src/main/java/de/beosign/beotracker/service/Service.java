@@ -10,7 +10,7 @@ public interface Service<T> {
 
     Class<T> getEntityClass();
 
-    default List<? extends T> findAll() {
+    default List<T> findAll() {
         TypedQuery<T> q = getEntityManager().createQuery("SELECT t FROM " + getEntityName() + " t", getEntityClass());
 
         return q.getResultList();
