@@ -6,6 +6,8 @@ import de.beosign.beotracker.jpa.AbstractEntity;
 
 @Entity
 public class Ticket extends AbstractEntity {
+    private static final long serialVersionUID = 1L;
+
     private String summary;
 
     public String getSummary() {
