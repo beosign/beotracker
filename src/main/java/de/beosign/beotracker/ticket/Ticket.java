@@ -1,6 +1,9 @@
 package de.beosign.beotracker.ticket;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Lob;
 
 import de.beosign.beotracker.jpa.AbstractEntity;
 
@@ -10,6 +13,12 @@ public class Ticket extends AbstractEntity {
 
     private String summary;
 
+    @Lob
+    private String description;
+
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.NEW;
+
     public String getSummary() {
         return summary;
     }
@@ -18,8 +27,57 @@ public class Ticket extends AbstractEntity {
         this.summary = summary;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
-        return "Ticket [summary=" + summary + ", id=" + id + ", version=" + version + "]";
+        return "Ticket [summary=" + summary + ", status=" + status + ", id=" + id + ", version=" + version + "]";
     }
+
+    /**
+     * Status values for tickets.
+     * 
+     * @author florian
+     */
+    public enum Status {
+        /**
+         * NEW.
+         */
+        NEW,
+
+        /**
+         * ASSIGNED.
+         */
+        ASSIGNED,
+
+        /**
+         * IN PROGRESS.
+         */
+        INPROGRESS,
+
+        /**
+         * RESOLVED.
+         */
+        RESOLVED,
+
+        /**
+         * CLOSED.
+         */
+        CLOSED
+    }
+
 }
