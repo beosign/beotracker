@@ -6,8 +6,7 @@
 	Tickets
     <h:form id="ticketForm">
 		<p:dataTable var="ticket" value="#{ticketsController.tickets}" selectionMode="single" rowKey="#{ticket.id}" selection="#{ticketsController.selectedTicket}">
-
-			<p:ajax event="rowSelect" listener="#{ticketsController.onRowSelect}" update="ticket-center" />
+			<p:ajax event="rowSelect" listener="#{ticketsController.onRowSelect}" />
 
 			<p:column headerText="ID">
 				<h:outputText value="#{ticket.id}"></h:outputText>

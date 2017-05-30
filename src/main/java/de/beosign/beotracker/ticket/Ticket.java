@@ -9,6 +9,8 @@ import de.beosign.beotracker.jpa.AbstractEntity;
 
 @Entity
 public class Ticket extends AbstractEntity {
+    public static final Ticket NULL_TICKET = new Ticket(-1000);
+
     private static final long serialVersionUID = 1L;
 
     private String summary;
@@ -18,6 +20,13 @@ public class Ticket extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.NEW;
+
+    public Ticket() {
+    }
+
+    private Ticket(int id) {
+        this.id = id;
+    }
 
     public String getSummary() {
         return summary;

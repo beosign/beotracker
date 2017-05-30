@@ -3,9 +3,11 @@ package de.beosign.beotracker.ticket;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.event.Observes;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.omnifaces.cdi.ViewScoped;
+import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +18,9 @@ import de.beosign.beotracker.jsf.AbstractController;
 public class TicketMainController extends AbstractController {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(TicketMainController.class);
+
+    @Inject
+    private TicketController ticketController;
 
     private String includeFile = "/WEB-INF/includes/ticket/tickets.xhtml";
 
@@ -35,7 +40,16 @@ public class TicketMainController extends AbstractController {
 
     public void onTicketSelected(@Observes Ticket ticket) {
         log.debug("Selected ticket: {}", ticket);
-        includeFile = "/WEB-INF/includes/ticket/ticket.xhtml";
+
+        if (ticket.getId() != Ticket.NULL_TICKET.getId()) {
+            includeFile = "/WEB-INF/includes/ticket/ticket.xhtml";
+            ticketController.setTicket(ticket);
+        } else {
+            includeFile = "/WEB-INF/includes/ticket/tickets.xhtml";
+            ticketController.setTicket(null);
+        }
+
+        RequestContext.getCurrentInstance().update("ticket-center");
     }
 
     public String getIncludeFile() {
