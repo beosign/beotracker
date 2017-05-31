@@ -4,8 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 
 import de.beosign.beotracker.jpa.AbstractEntity;
+import de.beosign.beotracker.user.User;
 
 @Entity
 public class Ticket extends AbstractEntity {
@@ -20,6 +22,9 @@ public class Ticket extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.NEW;
+
+    @ManyToOne
+    private User assignedUser;
 
     public Ticket() {
     }
@@ -54,7 +59,7 @@ public class Ticket extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "Ticket [summary=" + summary + ", status=" + status + ", id=" + id + ", version=" + version + "]";
+        return "Ticket [summary=" + summary + ", status=" + status + ", assignedUser=" + assignedUser + ", id=" + id + ", version=" + version + "]";
     }
 
     /**
@@ -87,6 +92,14 @@ public class Ticket extends AbstractEntity {
          * CLOSED.
          */
         CLOSED
+    }
+
+    public User getAssignedUser() {
+        return assignedUser;
+    }
+
+    public void setAssignedUser(User assignedUser) {
+        this.assignedUser = assignedUser;
     }
 
 }

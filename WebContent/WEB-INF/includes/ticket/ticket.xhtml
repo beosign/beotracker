@@ -1,13 +1,28 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <ui:composition>
     Ticket: <h:outputText value="#{ticketController.ticket}"></h:outputText>
 
-	<h:form>
-		<p:commandButton id="backBtn" value="Back" actionListener="#{ticketController.cancel}"></p:commandButton>
-	</h:form>
+    <p:panelGrid columns="1">
+        <p:row>
+			<h:form>
+				<p:commandButton id="backBtn" value="Back" actionListener="#{ticketController.cancel}" />
+			</h:form>
+	    </p:row>
+
+        <p:row>
+            <h:panelGroup layout="block">	   
+				<h:form>
+					<p:selectOneMenu id="assignedUserMenu" value="#{ticketController.assignedUser}" converter="omnifaces.SelectItemsIndexConverter">
+					   <f:selectItems value="#{ticketController.assignableUsers}" var="user" itemValue="#{user}" itemLabel="#{user.loginName}" />
+					</p:selectOneMenu>
+					<p:commandButton id="assignBtn" value="Assign" actionListener="#{ticketController.assign}" update=":#{p:component('ticket-center')}" />
+				</h:form>
+			</h:panelGroup>
+        </p:row>			
+    </p:panelGrid>
 </ui:composition>
 
 </html>

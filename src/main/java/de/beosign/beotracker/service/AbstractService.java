@@ -19,6 +19,11 @@ public abstract class AbstractService<T> implements Service<T> {
         return em;
     }
 
+    /**
+     * Retrieves the actual class of type parameter <code>&lt;T&gt;</code>.
+     * Taken from
+     * <a href="https://stackoverflow.com/questions/18707582/get-actual-type-of-generic-type-argument-on-abstract-superclass">here</a>
+     */
     @SuppressWarnings("unchecked")
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     @Override
