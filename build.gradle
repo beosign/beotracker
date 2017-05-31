@@ -37,6 +37,7 @@ dependencies {
   	compile 'commons-io:commons-io:2.+'
   	compile 'commons-beanutils:commons-beanutils:1.9.+'
     compile 'org.primefaces:primefaces:6.1'
+    compile 'org.primefaces.extensions:primefaces-extensions:6.1.+'
     compile 'org.omnifaces:omnifaces:2.6.2'
       
       
