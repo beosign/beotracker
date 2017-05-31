@@ -11,6 +11,8 @@ import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.beosign.beotracker.cdi.All;
+import de.beosign.beotracker.cdi.Selected;
 import de.beosign.beotracker.jsf.AbstractController;
 
 @Named
@@ -38,16 +40,19 @@ public class TicketMainController extends AbstractController {
         log.trace("destroy");
     }
 
-    public void onTicketSelected(@Observes Ticket ticket) {
+    public void onTicketSelected(@Observes @Selected Ticket ticket) {
         log.debug("Selected ticket: {}", ticket);
 
-        if (ticket.getId() != Ticket.NULL_TICKET.getId()) {
-            includeFile = "/WEB-INF/includes/ticket/ticket.xhtml";
-            ticketController.setTicket(ticket);
-        } else {
-            includeFile = "/WEB-INF/includes/ticket/tickets.xhtml";
-            ticketController.setTicket(null);
-        }
+        includeFile = "/WEB-INF/includes/ticket/ticket.xhtml";
+        ticketController.setTicket(ticket);
+        RequestContext.getCurrentInstance().update("ticket-center");
+    }
+
+    public void onShowAllTickets(@Observes @All Ticket ticket) {
+        log.debug("Selected ticket: {}", ticket);
+
+        includeFile = "/WEB-INF/includes/ticket/tickets.xhtml";
+        ticketController.setTicket(null);
 
         RequestContext.getCurrentInstance().update("ticket-center");
     }

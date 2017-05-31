@@ -6,6 +6,7 @@ import javax.inject.Named;
 
 import org.omnifaces.cdi.ViewScoped;
 
+import de.beosign.beotracker.cdi.All;
 import de.beosign.beotracker.jsf.AbstractController;
 
 @Named
@@ -14,6 +15,7 @@ public class TicketController extends AbstractController {
     private static final long serialVersionUID = 1L;
 
     @Inject
+    @All
     private Event<Ticket> ticketEvent;
 
     private Ticket ticket;

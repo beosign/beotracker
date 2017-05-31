@@ -15,6 +15,7 @@ import org.primefaces.event.SelectEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.beosign.beotracker.cdi.Selected;
 import de.beosign.beotracker.jsf.AbstractController;
 
 @Named
@@ -27,6 +28,7 @@ public class TicketsController extends AbstractController {
     private TicketService ticketService;
 
     @Inject
+    @Selected
     private Event<Ticket> ticketSelectedEvent;
 
     private List<Ticket> tickets;
