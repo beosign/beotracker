@@ -44,7 +44,7 @@ public class TicketMainController extends AbstractController {
         log.debug("Selected ticket: {}", ticket);
 
         includeFile = "/WEB-INF/includes/ticket/ticket.xhtml";
-        ticketController.setTicket(ticket);
+        ticketController.setSelectedTicket(ticket);
         RequestContext.getCurrentInstance().update("ticket-center");
     }
 

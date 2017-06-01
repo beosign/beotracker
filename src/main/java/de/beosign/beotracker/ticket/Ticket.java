@@ -1,5 +1,8 @@
 package de.beosign.beotracker.ticket;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -7,10 +10,11 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 import de.beosign.beotracker.jpa.AbstractEntity;
+import de.beosign.beotracker.status.StatefulEntity;
 import de.beosign.beotracker.user.User;
 
 @Entity
-public class Ticket extends AbstractEntity {
+public class Ticket extends AbstractEntity implements StatefulEntity<Ticket.Status> {
     public static final Ticket NULL_TICKET = new Ticket(-1000);
 
     private static final long serialVersionUID = 1L;
@@ -57,6 +61,19 @@ public class Ticket extends AbstractEntity {
         this.description = description;
     }
 
+    public User getAssignedUser() {
+        return assignedUser;
+    }
+
+    public void setAssignedUser(User assignedUser) {
+        this.assignedUser = assignedUser;
+    }
+
+    @Override
+    public List<Status> getTransitions() {
+        return Arrays.asList(Status.values());
+    }
+
     @Override
     public String toString() {
         return "Ticket [summary=" + summary + ", status=" + status + ", assignedUser=" + assignedUser + ", id=" + id + ", version=" + version + "]";
@@ -69,19 +86,9 @@ public class Ticket extends AbstractEntity {
      */
     public enum Status {
         /**
-         * NEW.
+         * CLOSED.
          */
-        NEW,
-
-        /**
-         * ASSIGNED.
-         */
-        ASSIGNED,
-
-        /**
-         * IN PROGRESS.
-         */
-        INPROGRESS,
+        CLOSED,
 
         /**
          * RESOLVED.
@@ -89,17 +96,20 @@ public class Ticket extends AbstractEntity {
         RESOLVED,
 
         /**
-         * CLOSED.
+         * IN PROGRESS.
          */
-        CLOSED
-    }
+        INPROGRESS,
 
-    public User getAssignedUser() {
-        return assignedUser;
-    }
+        /**
+         * ASSIGNED.
+         */
+        ASSIGNED,
 
-    public void setAssignedUser(User assignedUser) {
-        this.assignedUser = assignedUser;
+        /**
+         * NEW.
+         */
+        NEW;
+
     }
 
 }

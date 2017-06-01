@@ -1,9 +1,29 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:pe="http://primefaces.org/ui/extensions">
 
 <ui:composition>
-    Ticket: <h:outputText value="#{ticketController.ticket}"></h:outputText>
+    <pe:dynaForm id="ticketDynaForm" value="#{ticketController.dynaFormModel}" var="data">  
+        <pe:dynaFormControl type="input" for="txt">  
+            <p:inputText id="txt" value="#{data.value}" />  
+        </pe:dynaFormControl>  
+        <pe:dynaFormControl type="calendar" for="cal" styleClass="calendar">  
+            <p:calendar id="cal" value="#{data.value}"  showOn="button"/>  
+        </pe:dynaFormControl>  
+        <pe:dynaFormControl type="select" for="sel">  
+            <p:selectOneMenu id="sel" value="#{data.value}" >  
+                <f:selectItems value="#{data.listValues}"/>  
+            </p:selectOneMenu>  
+        </pe:dynaFormControl>  
+        <pe:dynaFormControl type="textarea" for="tarea">  
+            <p:inputTextarea id="tarea" value="#{data.value}"  autoResize="false"/>  
+        </pe:dynaFormControl>  
+        <pe:dynaFormControl type="rating" for="rat">  
+            <p:rating id="rat" value="#{data.value}" />  
+        </pe:dynaFormControl>  
+  
+ 
+    </pe:dynaForm>  
 
     <p:panelGrid columns="1">
         <p:row>
