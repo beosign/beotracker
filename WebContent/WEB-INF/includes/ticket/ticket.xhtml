@@ -3,46 +3,35 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:pe="http://primefaces.org/ui/extensions">
 
 <ui:composition>
-    <pe:dynaForm id="ticketDynaForm" value="#{ticketController.dynaFormModel}" var="data">  
-        <pe:dynaFormControl type="input" for="txt">  
-            <p:inputText id="txt" value="#{data.value}" />  
-        </pe:dynaFormControl>  
-        <pe:dynaFormControl type="calendar" for="cal" styleClass="calendar">  
-            <p:calendar id="cal" value="#{data.value}"  showOn="button"/>  
-        </pe:dynaFormControl>  
-        <pe:dynaFormControl type="selectOne" for="sel">  
-            <p:selectOneMenu id="sel" value="#{data.value}" >  
-                <f:selectItems value="#{data.values}"/>  
-            </p:selectOneMenu>  
-        </pe:dynaFormControl>  
-        <pe:dynaFormControl type="textarea" for="tarea">  
-            <p:inputTextarea id="tarea" value="#{data.value}"  autoResize="false"/>  
-        </pe:dynaFormControl>  
-        <pe:dynaFormControl type="rating" for="rat">  
-            <p:rating id="rat" value="#{data.value}" />  
-        </pe:dynaFormControl>  
-  
- 
-    </pe:dynaForm>  
-
-    <p:panelGrid columns="1">
-        <p:row>
-			<h:form>
-				<p:commandButton id="backBtn" value="Back" actionListener="#{ticketController.cancel}" />
-			</h:form>
-	    </p:row>
-
-        <p:row>
-            <h:panelGroup layout="block">	   
-				<h:form>
-					<p:selectOneMenu id="assignedUserMenu" value="#{ticketController.assignedUser}" converter="omnifaces.SelectItemsIndexConverter">
-					   <f:selectItems value="#{ticketController.assignableUsers}" var="user" itemValue="#{user}" itemLabel="#{user.loginName}" />
-					</p:selectOneMenu>
-					<p:commandButton id="assignBtn" value="Assign" actionListener="#{ticketController.assign}" update=":#{p:component('ticket-center')}" />
-				</h:form>
-			</h:panelGroup>
-        </p:row>			
-    </p:panelGrid>
+    <h:form id="dynaFormForm">
+	    <pe:dynaForm id="ticketDynaForm" value="#{ticketController.dynaFormModel}" var="dynaFormProp">  
+	        <pe:dynaFormControl type="input" for="txt">  
+	            <p:inputText id="txt" value="#{dynaFormProp.value}" />  
+	        </pe:dynaFormControl>  
+	        <pe:dynaFormControl type="calendar" for="cal" styleClass="calendar">  
+	            <p:calendar id="cal" value="#{dynaFormProp.value}"  showOn="button"/>  
+	        </pe:dynaFormControl>  
+	        <pe:dynaFormControl type="selectOne" for="sel">  
+	            <p:selectOneMenu id="sel" value="#{dynaFormProp.value}" converter="omnifaces.SelectItemsIndexConverter" >  
+	                <f:selectItems value="#{dynaFormProp.values}" var="entity" itemValue="#{entity}" itemLabel="#{dynaFormProp.getItemLabel(entity)}"/>  
+	            </p:selectOneMenu>  
+	        </pe:dynaFormControl>  
+	        <pe:dynaFormControl type="textarea" for="tarea">  
+	            <p:inputTextarea id="tarea" value="#{dynaFormProp.value}"  autoResize="false"/>  
+	        </pe:dynaFormControl>  
+	        <pe:dynaFormControl type="rating" for="rat">  
+	            <p:rating id="rat" value="#{dynaFormProp.value}" />  
+	        </pe:dynaFormControl>  
+	  
+	         <f:facet name="buttonBar">  
+	            <p:commandButton value="Save" actionListener="#{ticketController.assign}"
+	                             process="ticketDynaForm" update=":#{p:component('ticket-center')}"
+	                              />  
+	            <p:commandButton id="backBtn" value="Back" actionListener="#{ticketController.cancel}"  />  
+	        </f:facet> 
+	 
+	    </pe:dynaForm>  
+    </h:form>
 </ui:composition>
 
 </html>

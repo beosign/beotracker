@@ -23,6 +23,8 @@ public class TicketMainController extends AbstractController {
 
     @Inject
     private TicketController ticketController;
+    @Inject
+    private TicketsController ticketsController;
 
     private String includeFile = "/WEB-INF/includes/ticket/tickets.xhtml";
 
@@ -53,6 +55,7 @@ public class TicketMainController extends AbstractController {
 
         includeFile = "/WEB-INF/includes/ticket/tickets.xhtml";
         ticketController.setTicket(null);
+        ticketsController.init();
 
         RequestContext.getCurrentInstance().update("ticket-center");
     }

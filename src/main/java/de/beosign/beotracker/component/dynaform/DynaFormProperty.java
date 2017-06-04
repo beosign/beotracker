@@ -32,7 +32,7 @@ public class DynaFormProperty {
         Class<?> valueType = PropertyUtils.getPropertyType(entity, propertyName);
 
         if (value instanceof Enum) {
-            return new SingleListDynaFormProperty(propertyName, value, propertyName, Arrays.asList(valueType.getEnumConstants()));
+            return new SingleListDynaFormProperty<>(propertyName, value, propertyName, Arrays.asList(valueType.getEnumConstants()));
         } else {
             return new DynaFormProperty(propertyName, value, "input", propertyName);
         }
