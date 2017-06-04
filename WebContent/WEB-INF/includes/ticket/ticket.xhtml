@@ -10,9 +10,9 @@
         <pe:dynaFormControl type="calendar" for="cal" styleClass="calendar">  
             <p:calendar id="cal" value="#{data.value}"  showOn="button"/>  
         </pe:dynaFormControl>  
-        <pe:dynaFormControl type="select" for="sel">  
+        <pe:dynaFormControl type="selectOne" for="sel">  
             <p:selectOneMenu id="sel" value="#{data.value}" >  
-                <f:selectItems value="#{data.listValues}"/>  
+                <f:selectItems value="#{data.values}"/>  
             </p:selectOneMenu>  
         </pe:dynaFormControl>  
         <pe:dynaFormControl type="textarea" for="tarea">  
