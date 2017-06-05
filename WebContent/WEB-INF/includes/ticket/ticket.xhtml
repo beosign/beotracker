@@ -12,7 +12,7 @@
 	            <p:calendar id="cal" value="#{dynaFormProp.value}"  showOn="button"/>  
 	        </pe:dynaFormControl>  
 	        <pe:dynaFormControl type="selectOne" for="sel">  
-	            <p:selectOneMenu id="sel" value="#{dynaFormProp.value}" converter="omnifaces.SelectItemsIndexConverter" >  
+	            <p:selectOneMenu id="sel" value="#{dynaFormProp.value}" converter="omnifaces.SelectItemsConverter" >  
 	                <f:selectItems value="#{dynaFormProp.values}" var="entity" itemValue="#{entity}" itemLabel="#{dynaFormProp.getItemLabel(entity)}"/>  
 	            </p:selectOneMenu>  
 	        </pe:dynaFormControl>  

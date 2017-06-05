@@ -65,7 +65,7 @@ public class TicketController extends AbstractController {
 
     public void setSelectedTicket(Ticket ticket) {
         this.ticket = ticket;
-        this.dynaFormModel = createDynaFormModel();
+        this.init();
     }
 
     public void cancel() {
@@ -77,9 +77,10 @@ public class TicketController extends AbstractController {
 
         for (DynaFormProperty p : getTicketProperties()) {
             try {
+                log.debug("Setting property {} of ticket {}", p.getName(), ticket);
                 BeanUtils.setProperty(ticket, p.getName(), p.getValue());
             } catch (ReflectiveOperationException e) {
-                throw new IllegalArgumentException("Exceptin assigning property " + p.getName() + " to ticket", e);
+                throw new IllegalArgumentException("Exception assigning property " + p.getName() + " to ticket", e);
             }
         }
         ticket = ticketService.update(ticket);
