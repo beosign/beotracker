@@ -69,7 +69,7 @@ public class TicketController extends AbstractController {
     }
 
     public void cancel() {
-        ticketEvent.fire(Ticket.NULL_TICKET);
+        backToList();
     }
 
     public void assign() {
@@ -84,6 +84,11 @@ public class TicketController extends AbstractController {
             }
         }
         ticket = ticketService.update(ticket);
+        backToList();
+    }
+
+    private void backToList() {
+        ticketEvent.fire(Ticket.NULL_TICKET);
     }
 
     public List<User> getAssignableUsers() {
