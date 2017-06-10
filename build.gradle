@@ -91,12 +91,11 @@ war.doLast {
     println 'built WAR: ' + archiveName
 }
 
-task wildflySqlLoggingFilterJar(type: Jar) {
+task wildflySqlLoggingFilterJar(type: Jar, dependsOn: compileJava) {
     baseName = 'wildfly-sqllogging-filter'
-    from('src/main/java/') {
-         include 'de/beosign/beotracker/sqllog/wf/*.java'
-         include 'de/beosign/beotracker/sqllog/*.java'
-    }
+    from sourceSets.main.output
+         include '**/de/beosign/beotracker/sqllog/wf/*.class'
+         include '**/de/beosign/beotracker/sqllog/*.class'
     
     from('src/main/java/de/beosign/beotracker/sqllog/wf/') {
          include '*.xml' into '/META-INF'
