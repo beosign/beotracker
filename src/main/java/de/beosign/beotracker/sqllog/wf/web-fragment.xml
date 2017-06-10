@@ -1,0 +1,9 @@
+<web-fragment>
+    <filter>
+        <filter-name>WildflySqlLoggingFilter</filter-name>
+        <init-param>
+            <param-name>logfile</param-name>
+            <param-value>../standalone/log/sql.log</param-value>
+        </init-param>
+    </filter>
+</web-fragment>

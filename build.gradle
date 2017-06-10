@@ -83,7 +83,7 @@ task deployToOpenshift(type: Exec, dependsOn: copyWar) {
 }
 
 war {
-    rootSpec.exclude('**/WildflySqlLoggingFilter.class')
+    rootSpec.exclude('**/sqllog/**')
 }
 
 
@@ -93,7 +93,15 @@ war.doLast {
 
 task wildflySqlLoggingFilterJar(type: Jar) {
     baseName = 'wildfly-sqllogging-filter'
-    from('src/main/java/')
-    include 'de/beosign/beotracker/log/Wildfly*.java'
+    from('src/main/java/') {
+         include 'de/beosign/beotracker/sqllog/wf/*.java'
+         include 'de/beosign/beotracker/sqllog/*.java'
+    }
+    
+    from('src/main/java/de/beosign/beotracker/sqllog/wf/') {
+         include '*.xml' into '/META-INF'
+         include 'readme.txt' into '/META-INF'
+    }
+    
    
 }

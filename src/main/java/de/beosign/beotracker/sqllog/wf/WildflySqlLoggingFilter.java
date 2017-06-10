@@ -1,4 +1,4 @@
-package de.beosign.beotracker.log;
+package de.beosign.beotracker.sqllog.wf;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import de.beosign.beotracker.sqllog.SqlLogEventListener;
 
 /**
  * Logging Filter for Wildfly for monitoring the nummber of sql statements during <b>development</b>. In order to make it work, create the following entries in
@@ -50,14 +52,14 @@ import org.slf4j.LoggerFactory;
  *    &lt;/logger&gt;
  * </pre>
  * 
- * In addition, be sure that the path to the logfile is correct. To change the path to fit your needs, add the following to the web.xml file:
+ * In addition, be sure that the path to the logfile is correct. To change the path to fit your needs, change the following in the web-fragment.xml file:
  * 
  * <pre>
  *     &lt;filter&gt;
  *       &lt;filter-name&gt;WildflySqlLoggingFilter&lt;/filter-name&gt;
  *       &lt;init-param&gt;
  *           &lt;param-name&gt;logfile&lt;/param-name&gt;
- *           &lt;param-value&gt;C:/myPath/wildfly/standalone/log/sql.log&lt;/param-value&gt;
+ *           &lt;param-value&gt;../standalone/log/sql.log&lt;/param-value&gt;
  *       &lt;/init-param>
  *   &lt;/filter&gt;
  * </pre>
@@ -72,11 +74,15 @@ import org.slf4j.LoggerFactory;
 @WebFilter(
         filterName = "WildflySqlLoggingFilter",
         urlPatterns = { "*.xhtml" },
-        initParams = { @WebInitParam(name = "logfile", value = "C:/Program Files/Application Server/wildfly-10.0.0.Final/standalone/log/sql.log") })
+        initParams = { //
+                @WebInitParam(name = "logfile", value = "../standalone/log/sql.log"), //
+                @WebInitParam(name = "logEventListenerClass", value = "de.beosign.beotracker.sqllog.DefaultSqlLogEventListener") //
+        })
 public class WildflySqlLoggingFilter implements Filter {
     private static final Logger log = LoggerFactory.getLogger(WildflySqlLoggingFilter.class);
 
     private String logfileName;
+    private SqlLogEventListener sqlLogEventListener;
 
     public WildflySqlLoggingFilter() {
     }
@@ -84,7 +90,22 @@ public class WildflySqlLoggingFilter implements Filter {
     @Override
     public void init(FilterConfig config) throws ServletException {
         logfileName = config.getInitParameter("logfile");
-        log.info("Using the following logfile for extracting sql statement information: {}", logfileName);
+        String listenerClassname = config.getInitParameter("logEventListenerClass");
+
+        log.info("Using logfile {} (full path: {}) for extracting sql statement information with listener class {}",
+                logfileName,
+                new File(logfileName).getAbsolutePath(),
+                listenerClassname);
+
+        try {
+            @SuppressWarnings("unchecked")
+            Class<? extends SqlLogEventListener> listenerClass = (Class<? extends SqlLogEventListener>) Class.forName(listenerClassname);
+            sqlLogEventListener = listenerClass.newInstance();
+        } catch (ClassNotFoundException e) {
+            throw new IllegalArgumentException("Listener class with name " + listenerClassname + " not found", e);
+        } catch (ReflectiveOperationException e) {
+            throw new IllegalArgumentException("Listener class with name " + listenerClassname + " could not be instantiated", e);
+        }
     }
 
     @Override
@@ -131,16 +152,7 @@ public class WildflySqlLoggingFilter implements Filter {
                     .filter(line -> line != null && !line.isEmpty())
                     .collect(Collectors.groupingBy(line -> line.toString().split("\\s")[0]));
 
-            groupedStrings.entrySet().forEach(entry -> {
-                HttpServletRequest r = (HttpServletRequest) req;
-                String event = "GET";
-                String source = "<null>";
-                if (r.getParameter("javax.faces.partial.ajax") != null) {
-                    event = r.getParameter("javax.faces.partial.event");
-                    source = r.getParameter("javax.faces.source");
-                }
-                log.trace(r.getRequestURL().toString() + "(" + source + "," + event + "): " + entry.getKey() + ": " + entry.getValue().size());
-            });
+            sqlLogEventListener.logEvent((HttpServletRequest) req, groupedStrings);
         }
 
     }
