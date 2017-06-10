@@ -16,4 +16,12 @@
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
+
+	<filter>
+		<filter-name>WildflySqlLoggingFilter</filter-name>
+		<init-param>
+			<param-name>logfile</param-name>
+			<param-value>C:/Program Files/Application Server/wildfly-10.0.0.Final/standalone/log/sql.log</param-value>
+		</init-param>
+	</filter>
 </web-app>
