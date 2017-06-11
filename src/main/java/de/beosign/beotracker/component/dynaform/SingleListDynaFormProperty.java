@@ -7,17 +7,17 @@ public class SingleListDynaFormProperty<T> extends DynaFormProperty {
     private List<T> values;
     private Function<T, String> itemLabelPropertyMapper;
 
-    public SingleListDynaFormProperty(String name, T value, List<T> values) {
-        this(name, value, name, values);
+    public SingleListDynaFormProperty(Object baseObject, String name, T value, List<T> values) {
+        this(baseObject, name, value, name, values);
     }
 
-    public SingleListDynaFormProperty(String name, T value, String label, List<T> values) {
-        super(name, value, "selectOne", label);
+    public SingleListDynaFormProperty(Object baseObject, String name, T value, String label, List<T> values) {
+        super(baseObject, name, value, "selectOne", label);
         this.values = values;
     }
 
-    public SingleListDynaFormProperty(String name, T value, String label, List<T> values, Function<T, String> itemLabelPropertyMapper) {
-        super(name, value, "selectOne", label);
+    public SingleListDynaFormProperty(Object baseObject, String name, T value, String label, List<T> values, Function<T, String> itemLabelPropertyMapper) {
+        super(baseObject, name, value, "selectOne", label);
         this.values = values;
         this.itemLabelPropertyMapper = itemLabelPropertyMapper;
     }

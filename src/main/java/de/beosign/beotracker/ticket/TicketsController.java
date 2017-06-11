@@ -5,8 +5,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.event.Event;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -53,8 +51,6 @@ public class TicketsController extends AbstractController {
 
     public void onRowSelect(SelectEvent event) {
         log.debug("Selected row: {}", event.getObject());
-        FacesMessage msg = new FacesMessage("Ticket selected", "" + ((Ticket) event.getObject()).getId());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
         ticketSelectedEvent.fire(selectedTicket);
 
     }

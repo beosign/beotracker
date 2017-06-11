@@ -124,7 +124,8 @@ public class TicketController extends AbstractController {
             DynaFormControl control22 = row.addControl(statusProperty, statusProperty.getType());
             label21.setForControl(control22);
 
-            DynaFormProperty assignedUserProperty = new SingleListDynaFormProperty<>("assignedUser", ticket.getAssignedUser(), "Assigned User", assignableUsers,
+            DynaFormProperty assignedUserProperty = new SingleListDynaFormProperty<>(ticket, "assignedUser", ticket.getAssignedUser(), "Assigned User",
+                    assignableUsers,
                     user -> user.getLoginName());
             row = DynaFormRowBuilder.createWithLabelAndControl(dynaFormModel, assignedUserProperty);
 

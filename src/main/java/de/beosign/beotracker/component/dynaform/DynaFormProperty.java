@@ -5,20 +5,22 @@ import java.util.Arrays;
 import org.apache.commons.beanutils.PropertyUtils;
 
 public class DynaFormProperty {
+    private Object baseObject;
     private String type;
     private String label;
     private String name;
     private Object value;
 
-    public DynaFormProperty(String name, Object value) {
-        this(name, value, null);
+    public DynaFormProperty(Object baseObject, String name, Object value) {
+        this(baseObject, name, value, null);
     }
 
-    public DynaFormProperty(String name, Object value, String type) {
-        this(name, value, type, null);
+    public DynaFormProperty(Object baseObject, String name, Object value, String type) {
+        this(baseObject, name, value, type, null);
     }
 
-    public DynaFormProperty(String name, Object value, String type, String label) {
+    public DynaFormProperty(Object baseObject, String name, Object value, String type, String label) {
+        this.baseObject = baseObject;
         this.name = name;
         this.value = value;
         this.type = type;
@@ -26,15 +28,13 @@ public class DynaFormProperty {
     }
 
     public static <T> DynaFormProperty of(T entity, String propertyName) throws ReflectiveOperationException {
-        DynaFormProperty dynaFormProperty;
-
         Object value = PropertyUtils.getProperty(entity, propertyName);
         Class<?> valueType = PropertyUtils.getPropertyType(entity, propertyName);
 
         if (value instanceof Enum) {
-            return new SingleListDynaFormProperty<>(propertyName, value, propertyName, Arrays.asList(valueType.getEnumConstants()));
+            return new SingleListDynaFormProperty<>(entity, propertyName, value, propertyName, Arrays.asList(valueType.getEnumConstants()));
         } else {
-            return new DynaFormProperty(propertyName, value, "input", propertyName);
+            return new DynaFormProperty(entity, propertyName, value, "input", propertyName);
         }
 
     }
@@ -69,6 +69,10 @@ public class DynaFormProperty {
 
     public void setValue(Object value) {
         this.value = value;
+    }
+
+    public Object getBaseObject() {
+        return baseObject;
     }
 
 }
