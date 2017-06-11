@@ -4,7 +4,6 @@ import static de.beosign.beotracker.component.dynaform.DynaFormBeanValidator.*;
 
 import java.io.Serializable;
 import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Set;
 
 import javax.faces.application.FacesMessage;
@@ -20,6 +19,9 @@ import javax.validation.ValidatorFactory;
 import javax.validation.groups.Default;
 import javax.validation.metadata.BeanDescriptor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Invokes BeanValidation for a {@link DynaFormProperty}.
  * 
@@ -29,17 +31,20 @@ import javax.validation.metadata.BeanDescriptor;
 public class DynaFormBeanValidator implements Validator, Serializable {
     public static final String VALIDATOR_ID = "dynaFormBeanValidator";
 
+    private static final Logger log = LoggerFactory.getLogger(DynaFormBeanValidator.class);
     private static final long serialVersionUID = 1L;
 
-    public DynaFormBeanValidator() {
-    }
+    private static final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
 
     @Override
     public void validate(FacesContext ctx, UIComponent component, Object value) throws ValidatorException {
-        System.out.println("VALIDATE: " + value + "; " + value.getClass().getSimpleName());
-
         DynaFormProperty dynaFormProperty = (DynaFormProperty) component.getAttributes().get("dynaFormProperty");
-        System.out.println("VALIDATE: " + dynaFormProperty + "; " + dynaFormProperty.getBaseObject().getClass().getSimpleName());
+        if (dynaFormProperty == null) {
+            throw new IllegalArgumentException("A property named 'dynaFormProperty' must be set");
+        }
+
+        log.trace("Validate {}.{} on component {}", dynaFormProperty.getBaseObject().getClass().getSimpleName(), dynaFormProperty.getName(),
+                component.getClientId());
 
         javax.validation.Validator validator = createValidator(ctx);
 
@@ -53,9 +58,11 @@ public class DynaFormBeanValidator implements Validator, Serializable {
                 dynaFormProperty.getName(),
                 value, Default.class);
 
-        System.out.println("violations: " + constraintViolations);
-
         if (!constraintViolations.isEmpty()) {
+            log.debug("Constraint violations for {}.{} on component {}: {}", dynaFormProperty.getBaseObject().getClass().getSimpleName(),
+                    dynaFormProperty.getName(),
+                    component.getClientId(), constraintViolations);
+
             Set<FacesMessage> messages = new LinkedHashSet<>(constraintViolations.size());
             for (ConstraintViolation<?> violation : constraintViolations) {
                 messages.add(getMessage(ctx,
@@ -66,30 +73,17 @@ public class DynaFormBeanValidator implements Validator, Serializable {
             throw new ValidatorException(messages);
         }
 
+        log.trace("Successful validation of {}.{} on component {}", dynaFormProperty.getBaseObject().getClass().getSimpleName(), dynaFormProperty.getName(),
+                component.getClientId());
+
     }
 
     private FacesMessage getMessage(FacesContext ctx, String messageId, String message, String label) {
         return new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message);
     }
 
-    private ValidatorFactory getValidatorFactory(FacesContext context) {
-        ValidatorFactory validatorFactory = null;
-        Map<String, Object> applicationMap = context.getExternalContext().getApplicationMap();
-        Object attr = applicationMap.get(BeanValidator.VALIDATOR_FACTORY_KEY);
-        if (attr instanceof ValidatorFactory) {
-            validatorFactory = (ValidatorFactory) attr;
-        } else {
-
-            validatorFactory = Validation.buildDefaultValidatorFactory();
-            applicationMap.put(BeanValidator.VALIDATOR_FACTORY_KEY, validatorFactory);
-        }
-        return validatorFactory;
-    }
-
     private javax.validation.Validator createValidator(FacesContext context) {
-        return getValidatorFactory(context) //
-                .usingContext() //
-                .getValidator();
+        return validatorFactory.getValidator();
 
     }
 
