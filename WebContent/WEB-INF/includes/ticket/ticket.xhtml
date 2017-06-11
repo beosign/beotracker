@@ -1,19 +1,30 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:pe="http://primefaces.org/ui/extensions">
+<html xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:f="http://java.sun.com/jsf/core"
+ xmlns:h="http://java.sun.com/jsf/html"
+ xmlns:p="http://primefaces.org/ui"
+ xmlns:ui="http://java.sun.com/jsf/facelets"
+ xmlns:pe="http://primefaces.org/ui/extensions"
+ xmlns:bt="http://beotracker.beosign.de/jsf/facelets">
 
 <ui:composition>
     <h:form id="dynaFormForm">
+        <p:messages id="messages" showSummary="true"/>
+          
 	    <pe:dynaForm id="ticketDynaForm" value="#{ticketController.dynaFormModel}" var="dynaFormProp">  
 	        <pe:dynaFormControl type="input" for="txt">  
-	            <p:inputText id="txt" value="#{dynaFormProp.value}" />  
+	            <p:inputText id="txt" value="#{dynaFormProp.value}">
+	               <bt:validateDynaFormProperty dynaFormProperty="#{dynaFormProp}" />
+	            </p:inputText>  
 	        </pe:dynaFormControl>  
 	        <pe:dynaFormControl type="calendar" for="cal" styleClass="calendar">  
 	            <p:calendar id="cal" value="#{dynaFormProp.value}"  showOn="button"/>  
 	        </pe:dynaFormControl>  
 	        <pe:dynaFormControl type="selectOne" for="sel">  
 	            <p:selectOneMenu id="sel" value="#{dynaFormProp.value}" converter="omnifaces.SelectItemsConverter" >  
-	                <f:selectItems value="#{dynaFormProp.values}" var="entity" itemValue="#{entity}" itemLabel="#{dynaFormProp.getItemLabel(entity)}"/>  
+	                <f:selectItems value="#{dynaFormProp.values}" var="entity" itemValue="#{entity}" itemLabel="#{dynaFormProp.getItemLabel(entity)}"/>
+	                 <bt:validateDynaFormProperty dynaFormProperty="#{dynaFormProp}" />  
 	            </p:selectOneMenu>  
 	        </pe:dynaFormControl>  
 	        <pe:dynaFormControl type="textarea" for="tarea">  

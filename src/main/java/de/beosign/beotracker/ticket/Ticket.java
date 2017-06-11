@@ -8,6 +8,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import de.beosign.beotracker.jpa.AbstractEntity;
 import de.beosign.beotracker.status.StatefulEntity;
@@ -19,6 +21,8 @@ public class Ticket extends AbstractEntity implements StatefulEntity<Ticket.Stat
 
     private static final long serialVersionUID = 1L;
 
+    @NotNull
+    @Size(min = 1)
     private String summary;
 
     @Lob
