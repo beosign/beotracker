@@ -21,7 +21,17 @@ public class StatusValidator implements ConstraintValidator<ValidStatus, Ticket>
         log.debug("Validating ticket {} ({})", value.getSummary(), value.getId());
 
         if (value.getAssignedUser() == null) {
-            return value.getStatus() == Status.NEW;
+            boolean valid = value.getStatus() == Status.NEW;
+            if (!valid) {
+                context.disableDefaultConstraintViolation();
+                context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+                        .addPropertyNode("status")
+                        .addConstraintViolation();
+                context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+                        .addPropertyNode("assignedUser")
+                        .addConstraintViolation();
+                return false;
+            }
         }
         return true;
     }
