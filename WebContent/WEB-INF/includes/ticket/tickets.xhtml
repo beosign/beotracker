@@ -17,6 +17,9 @@
 			<p:column headerText="Status">
 				<h:outputText value="#{ticket.status}"></h:outputText>
 			</p:column>
+			<p:column headerText="Assignee">
+				<h:outputText value="#{ticket.assignedUser.loginName}"></h:outputText>
+			</p:column>
 		</p:dataTable>
 	</h:form>
 </ui:composition>

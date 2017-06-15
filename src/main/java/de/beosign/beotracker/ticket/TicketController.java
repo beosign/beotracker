@@ -52,6 +52,8 @@ public class TicketController extends AbstractController {
         super.init();
 
         assignableUsers = userService.findAll();
+        assignableUsers.add(null);
+
         dynaFormModel = createDynaFormModel();
     }
 
@@ -77,7 +79,7 @@ public class TicketController extends AbstractController {
 
         for (DynaFormProperty p : getTicketProperties()) {
             try {
-                log.debug("Setting property {} of ticket {}", p.getName(), ticket);
+                log.debug("Setting property {} of ticket {} to {}", p.getName(), ticket, p.getValue());
                 BeanUtils.setProperty(ticket, p.getName(), p.getValue());
             } catch (ReflectiveOperationException e) {
                 throw new IllegalArgumentException("Exception assigning property " + p.getName() + " to ticket", e);
@@ -126,7 +128,7 @@ public class TicketController extends AbstractController {
 
             DynaFormProperty assignedUserProperty = new SingleListDynaFormProperty<>(ticket, "assignedUser", ticket.getAssignedUser(), "Assigned User",
                     assignableUsers,
-                    user -> user.getLoginName());
+                    user -> user != null ? user.getLoginName() : "---");
             row = DynaFormRowBuilder.createWithLabelAndControl(dynaFormModel, assignedUserProperty);
 
             return dynaFormModel;
