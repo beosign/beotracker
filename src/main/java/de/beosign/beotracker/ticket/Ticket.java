@@ -27,6 +27,10 @@ public class Ticket extends AbstractEntity implements StatefulEntity<Ticket.Stat
     @Size(min = 1)
     private String summary;
 
+    @Enumerated
+    @NotNull
+    private Priority priority;
+
     @Lob
     private String description;
 
@@ -75,6 +79,14 @@ public class Ticket extends AbstractEntity implements StatefulEntity<Ticket.Stat
         this.assignedUser = assignedUser;
     }
 
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
     @Override
     public List<Status> getTransitions() {
         return Arrays.asList(Status.values());
@@ -116,6 +128,33 @@ public class Ticket extends AbstractEntity implements StatefulEntity<Ticket.Stat
          */
         NEW;
 
+    }
+
+    /**
+     * Priority.
+     * 
+     * @author florian
+     */
+    public enum Priority {
+        /**
+         * VERY HIGH.
+         */
+        VERY_HIGH,
+
+        /**
+         * HIGH.
+         */
+        HIGH,
+
+        /**
+         * MEDIUM.
+         */
+        MEDIUM,
+
+        /**
+         * LOW.
+         */
+        LOW;
     }
 
 }
