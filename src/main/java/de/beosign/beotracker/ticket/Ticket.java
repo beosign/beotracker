@@ -94,7 +94,8 @@ public class Ticket extends AbstractEntity implements StatefulEntity<Ticket.Stat
 
     @Override
     public String toString() {
-        return "Ticket [summary=" + summary + ", status=" + status + ", assignedUser=" + assignedUser + ", id=" + id + ", version=" + version + "]";
+        return "Ticket [summary=" + summary + ", priority=" + priority + ", description=" + description + ", status=" + status + ", assignedUser="
+                + assignedUser + "]";
     }
 
     /**

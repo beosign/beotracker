@@ -18,21 +18,21 @@ public class StatusValidator implements ConstraintValidator<ValidStatus, Ticket>
 
     @Override
     public boolean isValid(Ticket value, ConstraintValidatorContext context) {
-        log.debug("Validating ticket {} ({})", value.getSummary(), value.getId());
+        log.trace("Validating ticket {} ({})", value.getSummary(), value.getId());
 
-        if (value.getAssignedUser() == null) {
-            boolean valid = value.getStatus() == Status.NEW;
-            if (!valid) {
-                context.disableDefaultConstraintViolation();
-                context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
-                        .addPropertyNode("status")
-                        .addConstraintViolation();
-                context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
-                        .addPropertyNode("assignedUser")
-                        .addConstraintViolation();
-                return false;
-            }
+        if (value.getAssignedUser() == null && value.getStatus() != Status.NEW || value.getAssignedUser() != null && value.getStatus() == Status.NEW) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+                    .addPropertyNode("status")
+                    .addConstraintViolation();
+            context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+                    .addPropertyNode("assignedUser")
+                    .addConstraintViolation();
+            log.debug("Validating ticket {} ({}): {}", value.getSummary(), value.getId(), false);
+            return false;
         }
+
+        log.trace("Validating ticket {} ({}): {}", value.getSummary(), value.getId(), true);
         return true;
     }
 

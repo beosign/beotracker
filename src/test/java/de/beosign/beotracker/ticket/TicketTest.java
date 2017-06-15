@@ -55,6 +55,10 @@ public class TicketTest implements Serializable {
         log.info("Save called!");
     }
 
+    public void onShowState() {
+        log.debug("State: {}", ticket);
+    }
+
     public void setInvalid() {
         ticket = new Ticket();
         ticket.setStatus(Status.ASSIGNED);
