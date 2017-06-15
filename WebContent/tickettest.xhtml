@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:f="http://java.sun.com/jsf/core"
+ xmlns:h="http://java.sun.com/jsf/html"
+ xmlns:p="http://primefaces.org/ui"
+ xmlns:ui="http://java.sun.com/jsf/facelets"
+ xmlns:pe="http://primefaces.org/ui/extensions"
+ xmlns:o="http://omnifaces.org/ui"
+ xmlns:bt="http://beotracker.beosign.de/jsf/facelets">
+
+<h:head>
+    <title>Facelet Title</title>
+</h:head>
+<h:body>
+    <h:panelGroup layout="block">
+	    <h:form id="setInvalidForm">
+		   <p:commandButton id="setInvalid" value="Set Invalid" action="#{ticketTest.setInvalid()}" update=":#{p:component('singleTicket')} :#{p:component('singleTicketOmnifaces')}" process="@form" />   
+		   <p:commandButton id="setValid" value="Set Valid" action="#{ticketTest.setValid()}" update=":#{p:component('singleTicket')} :#{p:component('singleTicketOmnifaces')}" process="@form" />   
+	    </h:form>
+    </h:panelGroup>
+
+    <h:panelGroup layout="block">
+	    <h:form id="singleTicket">
+	       <p:messages id="messages" showSummary="true"/>
+	         
+		   <p:inputText id="summary" value="#{ticketTest.ticket.summary}" />
+		   <p:inputText id="priority" value="#{ticketTest.ticket.priority}" />
+           <p:inputText id="status" value="#{ticketTest.ticket.status}" />
+           <p:inputText id="assignedUser" value="#{ticketTest.ticket.assignedUser}" />		   
+		   
+		   <p:commandButton id="save" value="Save" action="#{ticketTest.onSave}" update="@form" process="@form" />   
+		   <p:commandButton id="savePartial" value="Save Partial" action="#{ticketTest.onSave}" partialSubmit="true" partialSubmitFilter="summary"  update="@form" process="@this summary" />   
+	    </h:form>
+    </h:panelGroup>
+
+    <h:panelGroup layout="block">
+	    <h:form id="singleTicketOmnifaces">
+	       <o:messages id="messages" for="singleTicketOmnifaces" />
+	         
+		   <p:inputText id="summary" value="#{ticketTest.ticket.summary}" />
+		   <p:inputText id="priority" value="#{ticketTest.ticket.priority}" />
+		   <p:inputText id="status" value="#{ticketTest.ticket.status}" />
+		   <p:selectOneMenu id="assignedUser" value="#{ticketTest.ticket.assignedUser}" converter="omnifaces.SelectItemsConverter">
+		      <f:selectItem itemValue="#{null}" itemLabel="---"/>
+		      <f:selectItems value="#{ticketTest.users}" var="user" itemValue="#{user}" itemLabel="#{empty user ? '---' : user.loginName}"/>
+		   </p:selectOneMenu>
+		   
+		   <p:commandButton id="save" value="Save" action="#{ticketTest.onSave}" update="@form" process="@form" />   
+		   <p:commandButton id="savePartial" value="Save Partial (Summary)" action="#{ticketTest.onSave}" partialSubmit="true" partialSubmitFilter="summary"  update="@form" process="@this summary" />
+		   
+		   <o:validateBean value="#{ticketTest.ticket}" showMessageFor="@violating" copier="org.omnifaces.util.copier.SerializationCopier"></o:validateBean>
+	    </h:form>
+    </h:panelGroup>
+</h:body>
+
+</html>
