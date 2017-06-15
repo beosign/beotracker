@@ -13,9 +13,11 @@ import javax.validation.constraints.Size;
 
 import de.beosign.beotracker.jpa.AbstractEntity;
 import de.beosign.beotracker.status.StatefulEntity;
+import de.beosign.beotracker.ticket.validation.ValidStatus;
 import de.beosign.beotracker.user.User;
 
 @Entity
+@ValidStatus
 public class Ticket extends AbstractEntity implements StatefulEntity<Ticket.Status> {
     public static final Ticket NULL_TICKET = new Ticket(-1000);
 
