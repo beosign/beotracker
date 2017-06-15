@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.beosign.beotracker.ticket.Ticket;
+import de.beosign.beotracker.ticket.Ticket.Priority;
 import de.beosign.beotracker.ticket.TicketService;
 import de.beosign.beotracker.user.User;
 import de.beosign.beotracker.user.UserService;
@@ -31,6 +32,7 @@ public class ApplicationBean {
         Ticket ticket = new Ticket();
         ticket.setSummary("Summary1");
         ticket.setDescription("Desc1");
+        ticket.setPriority(Priority.LOW);
         ticket = ticketService.create(ticket);
 
         log.info("Created ticket {}", ticket);
@@ -42,11 +44,13 @@ public class ApplicationBean {
     }
 
     private void initUsers() {
-        User user = new User("admin");
-        userService.create(user);
+        if (userService.findAll().isEmpty()) {
+            User user = new User("admin");
+            userService.create(user);
 
-        user = new User("florian");
-        userService.create(user);
+            user = new User("florian");
+            userService.create(user);
+        }
     }
 
 }
