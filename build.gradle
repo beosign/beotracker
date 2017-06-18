@@ -50,8 +50,21 @@ dependencies {
     testCompile 'org.apache.logging.log4j:log4j-slf4j-impl:2.6.2'
 }
 
+task createOpenshiftWar(type: War) {
+    rootSpec.eachFile { details ->
+        if (details.name == "jboss-ds.xml") {
+            details.exclude()
+        } else if (details.name == "jboss-ds-openshift.xml") {
+            details.name = "jboss-ds.xml"
+        } else if (details.name == "persistence.xml") {
+             details.exclude()
+        } else if (details.name == "persistence-openshift.xml") {
+            details.name = "persistence.xml"
+        }
+    }
+}
 
-task copyWar(type: Copy, dependsOn: war) {
+task copyOpenshiftWar(type: Copy, dependsOn: createOpenshiftWar) {
     from('build/libs')
     into('upload')
     include('*.war')
@@ -62,7 +75,7 @@ task copyWar(type: Copy, dependsOn: war) {
 
 }
 
-task deployToOpenshift(type: Exec, dependsOn: copyWar) {
+task deployToOpenshift(type: Exec, dependsOn: copyOpenshiftWar) {
     workingDir 'C:\\Program Files (x86)\\OpenShift'
  
     commandLine 'cmd', '/c', 'oc rsync "' + new File('upload/').getAbsoluteFile() + '" beotracker-3-8vpfp:/wildfly/standalone/deployments'

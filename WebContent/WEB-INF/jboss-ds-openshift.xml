@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources xmlns="http://www.jboss.org/ironjacamar/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.jboss.org/ironjacamar/schema http://docs.jboss.org/ironjacamar/schema/datasources_1_1.xsd">
+	<datasource jndi-name="java:jboss/datasources/mysql" pool-name="mysql" enabled="true" use-java-context="true">
+		<connection-url>jdbc:mysql://172.30.234.240:3306/beotracker?useSSL=false</connection-url>
+		<driver-class>com.mysql.jdbc.Driver</driver-class>
+		<driver>mysql</driver>
+
+		<!-- sql to call when connection is created -->
+		<new-connection-sql>SELECT 1</new-connection-sql>
+
+		<pool>
+			<min-pool-size>5</min-pool-size>
+			<max-pool-size>50</max-pool-size>
+		</pool>
+
+		<security>
+			<user-name>${user}</user-name>
+			<password>${password}</password>
+		</security>
+
+		<!-- sql to call on an existing pooled connection when it is obtained from pool -->
+		<validation>
+			<check-valid-connection-sql>SELECT 1</check-valid-connection-sql>
+		</validation>
+
+		<timeout>
+			<blocking-timeout-millis>300000</blocking-timeout-millis>
+			<idle-timeout-minutes>5</idle-timeout-minutes>
+		</timeout>
+		<statement>
+			<track-statements>true</track-statements>
+		</statement>
+	</datasource>
+</datasources>
