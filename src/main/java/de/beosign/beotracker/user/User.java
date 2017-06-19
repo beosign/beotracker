@@ -1,11 +1,15 @@
 package de.beosign.beotracker.user;
 
 import javax.persistence.Entity;
+import javax.persistence.NamedQuery;
 
 import de.beosign.beotracker.jpa.AbstractEntity;
 
 @Entity
+@NamedQuery(name = User.QUERY_FIND_BY_LOGIN, query = "select u from User u where u.loginName = :loginName")
 public class User extends AbstractEntity {
+    static final String QUERY_FIND_BY_LOGIN = "User.findByLogin";
+
     private static final long serialVersionUID = 1L;
 
     private String loginName;
