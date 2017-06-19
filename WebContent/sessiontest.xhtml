@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:f="http://java.sun.com/jsf/core"
+ xmlns:h="http://java.sun.com/jsf/html"
+ xmlns:p="http://primefaces.org/ui"
+ xmlns:ui="http://java.sun.com/jsf/facelets"
+ xmlns:pe="http://primefaces.org/ui/extensions"
+ xmlns:o="http://omnifaces.org/ui"
+ xmlns:bt="http://beotracker.beosign.de/jsf/facelets">
+
+<h:head>
+    <title>Session Test</title>
+</h:head>
+<h:body>
+    <h:panelGrid id="grid" columns="1" >
+        <h:outputText value="Current user: #{sessionUser.user.loginName}" />
+	    <h:form id="form">
+		   <p:commandButton id="loginBtn" value="Login" action="#{sessionTestController.login('admin')}" update=":#{p:component('grid')}" process="@form" />   
+		   <p:commandButton id="startProcessBtn" value="Start Process" action="#{sessionTestController.startProcess()}" update=":#{p:component('grid')}" process="@form" />   
+	    </h:form>
+    </h:panelGrid>
+</h:body>
+
+</html>
