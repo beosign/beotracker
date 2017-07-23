@@ -64,16 +64,16 @@
 		      <p:ajax event="blur" partialSubmit="true" update="@this" />
 		   </p:inputText> 
 		   <p:inputText id="status" value="#{ticketTest.ticket.status}">
-		      <p:ajax event="blur" process="@this assignedUser" update="@this assignedUser" />
+		      <p:ajax event="blur" process="@this assignedUser" update="@this assignedUser" partialSubmit="true" partialSubmitFilter="#singleTicketOmnifacesBlur\\:status, #singleTicketOmnifacesBlur\\:assignedUser, #singleTicketOmnifacesBlur\\:assignedUser_input, #singleTicketOmnifacesBlur\\:assignedUser_focus" />
 		   </p:inputText>
 		   <p:selectOneMenu id="assignedUser" value="#{ticketTest.ticket.assignedUser}" converter="omnifaces.SelectItemsConverter">
-		      <p:ajax event="change" process="@this status" update="@this status" />
+		      <p:ajax event="change" process="@this status" update="@this status" partialSubmit="true" partialSubmitFilter="#singleTicketOmnifacesBlur\\:status, #singleTicketOmnifacesBlur\\:assignedUser, #singleTicketOmnifacesBlur\\:assignedUser_input, #singleTicketOmnifacesBlur\\:assignedUser_focus" />
 		      <!-- 
 			      Omnifaces looks at all submitted ids to determine the form where the submitting component is contained when checkingif BV is to be applied.
 			      PF however appends _focus and _input to this component, so Omnifaces cannot find this component.
 			      Therefore send a request parameter with this client id. The value does not matter as long as it is not null (value not transferred in this case) 
 		      -->
-		      <f:param name="#{component.clientId}" value="#{empty ticketTest.ticket.assignedUser ? 'nouser' : ticketTest.ticket.assignedUser}" /> 
+		      <f:param name="#{component.clientId}" value="#{ticketTest.ticket.assignedUser eq null ? 'nouser' : ticketTest.ticket.assignedUser}" /> 
 		      <f:selectItem itemValue="#{null}" itemLabel="---"/>
 		      <f:selectItems value="#{ticketTest.users}" var="user" itemValue="#{user}" itemLabel="#{empty user ? '---' : user.loginName}"/>
 		   </p:selectOneMenu>
