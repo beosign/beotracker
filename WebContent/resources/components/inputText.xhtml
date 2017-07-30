@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite">
+
+<cc:interface displayName="BeoTracker InputText" shortDescription="Extension to the PrimeFaces' inputText component to which a custom validator with parameters can be attached">
+	<cc:attribute name="value" required="true" shortDescription="bound value" />
+	<cc:attribute name="validatorId" type="java.lang.String" shortDescription="validator id. The referenced validator should extend from de.beosign.beotracker.component.inputtext.ParameterizedValidator" />
+	<cc:attribute name="validatorParams" type="java.util.Map" shortDescription="A map that is made available to the validator as attribute 'params'. So a call to component.getAttributes().get('params') returns this map" />
+	<cc:editableValueHolder name="input" targets="text" />
+</cc:interface>
+<cc:implementation>
+	<div id="#{cc.clientId}">
+		<p:inputText id="text" value="#{cc.attrs.value}">
+		  <c:if test="#{not empty cc.attrs.validatorId}">
+		      <f:validator validatorId="#{cc.attrs.validatorId}" />
+		      <f:attribute name="params" value="#{cc.attrs.validatorParams}" />
+		  </c:if>
+		</p:inputText>
+	</div>
+</cc:implementation>
+
+</html>
