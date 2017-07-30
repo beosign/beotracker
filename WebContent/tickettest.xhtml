@@ -7,7 +7,8 @@
  xmlns:ui="http://java.sun.com/jsf/facelets"
  xmlns:pe="http://primefaces.org/ui/extensions"
  xmlns:o="http://omnifaces.org/ui"
- xmlns:bt="http://beotracker.beosign.de/jsf/facelets">
+ xmlns:bt="http://beotracker.beosign.de/jsf/facelets"
+ xmlns:app="http://java.sun.com/jsf/composite/components">
 
 <h:head>
     <title>Facelet Title</title>
@@ -24,7 +25,9 @@
 	    <h:form id="singleTicket">
 	       <p:messages id="messages" showSummary="true"/>
 	         
-		   <p:inputText id="summary" value="#{ticketTest.ticket.summary}" />
+		   <app:inputText id="summary" value="#{ticketTest.ticket.summary}">
+		      <f:validateLength for="input" minimum="3" maximum="8" />
+		   </app:inputText>
 		   <p:inputText id="priority" value="#{ticketTest.ticket.priority}" />
            <p:inputText id="status" value="#{ticketTest.ticket.status}" />
            <p:inputText id="assignedUser" value="#{ticketTest.ticket.assignedUser}" />		   
@@ -38,7 +41,9 @@
 	    <h:form id="singleTicketOmnifaces">
 	       <o:messages id="messages" for="singleTicketOmnifaces" />
 	         
-		   <p:inputText id="summary" value="#{ticketTest.ticket.summary}" />
+           <app:inputText id="summary" value="#{ticketTest.ticket.summary}" >
+              <f:validateLength for="input" minimum="3" maximum="8" />
+           </app:inputText>
 		   <p:inputText id="priority" value="#{ticketTest.ticket.priority}" />
 		   <p:inputText id="status" value="#{ticketTest.ticket.status}" />
 		   <p:selectOneMenu id="assignedUser" value="#{ticketTest.ticket.assignedUser}" converter="omnifaces.SelectItemsConverter">
