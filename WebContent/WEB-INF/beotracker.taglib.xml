@@ -17,4 +17,27 @@
             <type>de.beosign.beotracker.component.dynaform.DynaFormProperty</type>
         </attribute>
     </tag>
+    <tag>
+        <description>Validator that validates a de.beosign.beotracker.settings.Setting.</description>
+        <tag-name>validateSetting</tag-name>
+         
+        <validator>
+            <validator-id>de.beosign.beotracker.settings.SettingsValidator</validator-id>
+        </validator>
+        <attribute>
+            <description>EL expression that resolves to a setting. Be aware that a tag handler like this runs at view build time, so an EL expression referencing an iteration variable of a ui:repeat will not work. In case you need to validate a setting in such a repeating construct, do not use this property and use 'settingVar' instead</description>
+            <name>setting</name>
+            <type>de.beosign.beotracker.settings.Setting</type>
+        </attribute>
+        <attribute>
+            <description>A string that matches the name of an iteration variable like in a ui:repeat or a h:datatable. The variable is resolved to the current iteration variable during validation</description>
+            <name>settingVar</name>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>Determines to which component this validator is bound, useful for referencing a component within a composite component.</description>
+            <name>for</name>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>    
 </facelet-taglib>

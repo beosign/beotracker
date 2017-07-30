@@ -22,6 +22,7 @@
 			<ui:repeat var="setting" value="#{settingsController.settings}">
 				<h:outputLabel for="settingValue" value="#{setting.key}" />
                     <app:inputText id="settingValue" value="#{setting.value}" >
+                        <bt:validateSetting settingVar="setting" for="input" />
                     </app:inputText>
 			</ui:repeat>
 
