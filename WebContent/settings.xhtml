@@ -35,7 +35,7 @@
 			<p:messages id="messages" showSummary="true" />
 			<ui:repeat var="setting" value="#{settingsController.settings}">
 				<h:outputLabel for="settingValue" value="#{setting.key}" />
-				<app:inputText id="settingValue" value="#{setting.value}" />
+				<app:inputText id="settingValue" value="#{setting.value}" validatorId="de.beosign.beotracker.settings.ParameterizedSettingsValidator" validatorParams="#{{'setting': setting}}" />
 			</ui:repeat>
 
 			<p:commandButton id="save" value="Save" action="#{settingsController.onSave}" update="@form" process="@form" />
