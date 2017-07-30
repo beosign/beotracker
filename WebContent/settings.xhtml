@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:bt="http://beotracker.beosign.de/jsf/facelets"
+	xmlns:app="http://java.sun.com/jsf/composite/components">
+
+<h:head>
+	<title>Settings</title>
+</h:head>
+<h:body>
+
+	<h:panelGroup layout="block">
+	    <!-- use the specialized settings validator -->
+		<h:form id="settings">
+			<p:messages id="messages" showSummary="true" />
+			<ui:repeat var="setting" value="#{settingsController.settings}">
+				<h:outputLabel for="settingValue" value="#{setting.key}" />
+                    <app:inputText id="settingValue" value="#{setting.value}" >
+                    </app:inputText>
+			</ui:repeat>
+
+			<p:commandButton id="save" value="Save" action="#{settingsController.onSave}"
+				update="@form" process="@form" />
+		</h:form>
+
+        <!-- use the more generic parameterized validator -->
+		<h:form id="settings2">
+			<p:messages id="messages" showSummary="true" />
+			<ui:repeat var="setting" value="#{settingsController.settings}">
+				<h:outputLabel for="settingValue" value="#{setting.key}" />
+				<app:inputText id="settingValue" value="#{setting.value}" />
+			</ui:repeat>
+
+			<p:commandButton id="save" value="Save" action="#{settingsController.onSave}" update="@form" process="@form" />
+		</h:form>
+	</h:panelGroup>
+
+</h:body>
+
+</html>
