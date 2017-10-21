@@ -29,8 +29,11 @@
 	</ul>
     <b>Result: Only the "odd" control is rendered.</b>
     
+    
     <h:form id="form">
 		<h:panelGrid id="grid" columns="1">
+		    <ui:debug hotkey="x" />
+	        <h:outputText value="#{forEachBean.sum}" />
 			<bt:if test="#{forEachBean.items.size() % 2 == 0}" var="even">
 				<h:outputText value="item size is even"></h:outputText>
 			</bt:if>
