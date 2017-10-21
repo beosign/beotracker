@@ -39,5 +39,21 @@
             <name>for</name>
             <type>java.lang.String</type>
         </attribute>
-    </tag>    
+    </tag>
+    <tag>
+        <tag-name>if</tag-name>
+        <handler-class>de.beosign.beotracker.tag.IfTagHandler</handler-class>
+        <attribute>
+            <description>condition to test</description>
+            <name>test</name>
+            <required>true</required>
+            <type>java.lang.Boolean</type>
+        </attribute>        
+        <attribute>
+            <description>Captures the result of the condition and exposes it as variable with this name</description>
+            <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>        
+    </tag>
 </facelet-taglib>
