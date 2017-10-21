@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:c="http://java.sun.com/jsp/jstl/core"
+ xmlns:f="http://java.sun.com/jsf/core"
+ xmlns:h="http://java.sun.com/jsf/html"
+ xmlns:p="http://primefaces.org/ui"
+ xmlns:ui="http://java.sun.com/jsf/facelets"
+ xmlns:pe="http://primefaces.org/ui/extensions"
+ xmlns:o="http://omnifaces.org/ui"
+ xmlns:bt="http://beotracker.beosign.de/jsf/facelets">
+
+<h:head>
+    <title>ForEach Tests</title>
+</h:head>
+<h:body>
+    <h:form id="form">
+        <h:panelGrid id="grid" columns="1" >
+	        <c:forEach items="#{forEachBean.items}" var="item">
+		        <h:outputText value="item: #{item}" />
+	        </c:forEach>
+        </h:panelGrid>
+        <p:commandButton value="Add Item" update="grid" action="#{forEachBean.addItem()}" />
+        <p:commandButton value="Remove Item" update="grid" action="#{forEachBean.removeItem()}"/>
+	</h:form>
+</h:body>
+
+</html>
